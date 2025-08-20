@@ -520,3 +520,654 @@ public void insertAtHead(int data) {
     }
 }
 -------------------------------------------------------------------------------
+Conversation opened. 1 unread message.
+
+Skip to content
+Using Gmail with screen readers
+Enable desktop notifications for Gmail.
+   OK  No thanks
+1 of 425
+(no subject)
+Inbox
+
+Hemachandar
+2:32 PM (46 minutes ago)
+to me
+
+public class SinglyCircularLinkedList {
+    private static class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    private Node head, tail;
+    private int size;
+
+public void insertAtHead(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+            tail.next = head;
+        } else {
+            newNode.next = head;
+            head = newNode;
+            tail.next = head;
+        }
+        size++;
+    }
+    public void insertAtTail(int data) {
+        Node newNode = new Node(data);
+        if (tail == null) {
+            head = tail = newNode;
+            tail.next = head;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+            tail.next = head;
+        }
+        size++;
+    }
+    public void insertAtPosition(int index, int data) {
+        if (index < 0 || index > size) {
+            System.out.println("Invalid position");
+            return;
+        }
+        if (index == 0) {
+            insertAtHead(data);
+        } else if (index == size) {
+            insertAtTail(data);
+        } else {
+            Node newNode = new Node(data);
+            Node current = head;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.next;
+            }
+            newNode.next = current.next;
+            current.next = newNode;
+            size++;
+        }
+    }
+    public void deleteAtHead() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            head = head.next;
+            tail.next = head;
+        }
+        size--;
+    }
+    public void deleteAtTail() {
+        if (tail == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            Node current = head;
+            while (current.next != tail) {
+                current = current.next;
+            }
+            current.next = head;
+            tail = current;
+        }
+        size--;
+    }
+    public void deleteAtPosition(int index) {
+        if (index < 0 || index >= size) {
+            System.out.println("Invalid position");
+            return;
+        }
+        if (index == 0) {
+            deleteAtHead();
+        } else if (index == size - 1) {
+            deleteAtTail();
+        } else {
+            Node current = head;
+            for (int i = 0; i < index - 1; i++) {
+                current = current.next;
+            }
+            current.next = current.next.next;
+            size--;
+        }
+    }
+    public int search(int key) {
+        if (head == null) return -1;
+
+        Node current = head;
+        int index = 0;
+        do {
+            if (current.data == key) return index;
+            current = current.next;
+            index++;
+        } while (current != head);
+
+        return -1;
+    }
+    public void updateAtPosition(int index, int newValue) {
+        if (index < 0 || index >= size) {
+            System.out.println("Invalid position");
+            return;
+        }
+
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+
+        int oldValue = current.data;
+        current.data = newValue;
+        System.out.println("Updated position " + index + " from " + oldValue + " to " + newValue);
+    }
+    public void display() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        Node current = head;
+        System.out.print("List: ");
+        do {
+            System.out.print(current.data + " -> ");
+            current = current.next;
+        } while (current != head);
+        System.out.println("(back to head)");
+    }
+    public int getSize() {
+        return size;
+    }
+    public static void main(String[] args) {
+        SinglyCircularLinkedList list = new SinglyCircularLinkedList();
+
+        list.insertAtHead(10);
+        list.insertAtTail(20);
+        list.insertAtPosition(1, 15);
+        list.display();
+
+        list.deleteAtHead();
+        list.display();  
+
+        list.deleteAtTail();
+        list.display();  
+
+        list.insertAtTail(30);
+        list.insertAtTail(40);
+        list.insertAtPosition(1, 25);
+        list.display();
+
+        int pos = list.search(25);
+        System.out.println("Position of 25: " + (pos != -1 ? pos : "Not found"));
+
+        list.updateAtPosition(1, 100);
+        list.display();
+
+        list.updateAtPosition(0, 9);
+        list.updateAtPosition(3, 99);  
+        list.display();
+
+        list.updateAtPosition(10, 500);
+    }
+}
+---------------------------------------------------------------------------------------------
+public class DoublyCircularLinkedList {
+    private static class Node {
+        int data;
+        Node next;
+        Node prev;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+    private Node head, tail;
+    private int size;
+
+    public void insertAtHead(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+            head.next = head.prev = head;
+        } else {
+            newNode.next = head;
+            newNode.prev = tail;
+            head.prev = newNode;
+            tail.next = newNode;
+            head = newNode;
+        }
+        size++;
+    }
+    public void insertAtTail(int data) {
+        Node newNode = new Node(data);
+        if (tail == null) {
+            insertAtHead(data);
+        } else {
+            newNode.prev = tail;
+            newNode.next = head;
+            tail.next = newNode;
+            head.prev = newNode;
+            tail = newNode;
+            size++;
+        }
+    }
+    public void insertAtPosition(int index, int data) {
+        if (index < 0 || index > size) {
+            System.out.println("Invalid position");
+            return;
+        }
+        if (index == 0) {
+            insertAtHead(data);
+        } else if (index == size) {
+            insertAtTail(data);
+        } else {
+            Node newNode = new Node(data);
+            Node current = head;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+            Node prevNode = current.prev;
+            prevNode.next = newNode;
+            newNode.prev = prevNode;
+            newNode.next = current;
+            current.prev = newNode;
+            size++;
+        }
+    }
+    public void deleteAtHead() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            head = head.next;
+            head.prev = tail;
+            tail.next = head;
+        }
+        size--;
+    }
+
+    public void deleteAtTail() {
+        if (tail == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            tail = tail.prev;
+            tail.next = head;
+            head.prev = tail;
+        }
+        size--;
+    }
+    public void deleteAtPosition(int index) {
+        if (index < 0 || index >= size) {
+            System.out.println("Invalid position");
+            return;
+        }
+
+        if (index == 0) {
+            deleteAtHead();
+        } else if (index == size - 1) {
+            deleteAtTail();
+        } else {
+            Node current = head;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+            Node prevNode = current.prev;
+            Node nextNode = current.next;
+            prevNode.next = nextNode;
+            nextNode.prev = prevNode;
+            size--;
+        }
+    }
+    public int search(int key) {
+        if (head == null) return -1;
+
+        Node current = head;
+        int index = 0;
+        do {
+            if (current.data == key) {
+                return index;
+            }
+            current = current.next;
+            index++;
+        } while (current != head);
+        return -1;
+    }
+    public void updateAtPosition(int index, int newValue) {
+        if (index < 0 || index >= size) {
+            System.out.println("Invalid position");
+            return;
+        }
+
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+
+        int oldValue = current.data;
+        current.data = newValue;
+        System.out.println("Updated position " + index + " from " + oldValue + " to " + newValue);
+    }
+    public void displayForward() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        Node current = head;
+        System.out.print("Forward: ");
+        do {
+            System.out.print(current.data + " <-> ");
+            current = current.next;
+        } while (current != head);
+        System.out.println("(back to head)");
+    }
+    public void displayBackward() {
+        if (tail == null) {
+            System.out.println("List is empty");
+            return;
+        }
+
+        Node current = tail;
+        System.out.print("Backward: ");
+        do {
+            System.out.print(current.data + " <-> ");
+            current = current.prev;
+        } while (current != tail);
+        System.out.println("(back to tail)");
+    }
+    public int getSize() {
+        return size;
+    }
+    public static void main(String[] args) {
+        DoublyCircularLinkedList list = new DoublyCircularLinkedList();
+
+        list.insertAtHead(10);
+        list.insertAtTail(20);
+        list.insertAtPosition(1, 15);
+        list.displayForward();  
+        list.displayBackward();
+
+        list.deleteAtHead();
+        list.displayForward();  
+
+        list.deleteAtTail();
+        list.displayForward();  
+
+        list.insertAtTail(30);
+        list.insertAtTail(40);
+        list.insertAtPosition(1, 25);
+        list.displayForward();  
+
+        int pos = list.search(30);
+        System.out.println("Position of 30: " + (pos != -1 ? pos : "Not found"));
+
+        list.updateAtPosition(1, 100);
+        list.updateAtPosition(3, 99);  
+        list.displayForward();        
+
+        list.updateAtPosition(10, 500);
+    }
+}
+-------------------------------------------------------------------------------------------------------
+class PolyNode {
+    int coefficient;
+    int power;
+    PolyNode next;
+
+    PolyNode() {}
+
+    PolyNode(int c, int p) {
+        coefficient = c;
+        power = p;
+        next = null;
+    }
+}
+
+public class PolynomialAddition {
+
+    public PolyNode addPolynomials(PolyNode poly1, PolyNode poly2) {
+        PolyNode dummy = new PolyNode(0, 0);
+        PolyNode current = dummy;
+
+        while (poly1 != null && poly2 != null) {
+            if (poly1.power > poly2.power) {
+                current.next = new PolyNode(poly1.coefficient, poly1.power);
+                poly1 = poly1.next;
+            } else if (poly1.power < poly2.power) {
+                current.next = new PolyNode(poly2.coefficient, poly2.power);
+                poly2 = poly2.next;
+            } else {
+                int sum = poly1.coefficient + poly2.coefficient;
+                if (sum != 0) {
+                    current.next = new PolyNode(sum, poly1.power);
+                }
+                poly1 = poly1.next;
+                poly2 = poly2.next;
+            }
+
+            if (current.next != null)
+                current = current.next;
+        }
+
+        while (poly1 != null) {
+            current.next = new PolyNode(poly1.coefficient, poly1.power);
+            poly1 = poly1.next;
+            current = current.next;
+        }
+
+        while (poly2 != null) {
+            current.next = new PolyNode(poly2.coefficient, poly2.power);
+            poly2 = poly2.next;
+            current = current.next;
+        }
+
+        return dummy.next;
+    }
+    public void printPolynomial(PolyNode head) {
+        while (head != null) {
+            System.out.print(head.coefficient + "x^" + head.power);
+            if (head.next != null)
+                System.out.print(" + ");
+            head = head.next;
+        }
+        System.out.println();
+    }
+    public static void main(String[] args) {
+        PolynomialAddition pa = new PolynomialAddition();
+
+        PolyNode poly1 = new PolyNode(5, 3);
+        poly1.next = new PolyNode(4, 2);
+        poly1.next.next = new PolyNode(2, 0);
+
+        PolyNode poly2 = new PolyNode(5, 1);
+        poly2.next = new PolyNode(5, 0);
+
+        System.out.print("Poly1: ");
+        pa.printPolynomial(poly1);
+
+        System.out.print("Poly2: ");
+        pa.printPolynomial(poly2);
+
+        PolyNode result = pa.addPolynomials(poly1, poly2);
+
+        System.out.print("Result: ");
+        pa.printPolynomial(result);
+    }
+}
+--------------------------------------------------------------------------------------------
+class PolyNode {
+    int coefficient;
+    int power;
+    PolyNode next;
+
+    PolyNode() {}
+
+    PolyNode(int c, int p) {
+        coefficient = c;
+        power = p;
+        next = null;
+    }
+}
+
+public class PolynomialSubtraction {
+
+    public PolyNode subtractPolynomials(PolyNode poly1, PolyNode poly2) {
+        PolyNode dummy = new PolyNode(0, 0);
+        PolyNode current = dummy;
+
+        while (poly1 != null && poly2 != null) {
+            if (poly1.power > poly2.power) {
+                current.next = new PolyNode(poly1.coefficient, poly1.power);
+                poly1 = poly1.next;
+            } else if (poly1.power < poly2.power) {
+                current.next = new PolyNode(-poly2.coefficient, poly2.power);
+                poly2 = poly2.next;
+            } else {
+                int diff = poly1.coefficient - poly2.coefficient;
+                if (diff != 0) {
+                    current.next = new PolyNode(diff, poly1.power);
+                }
+                poly1 = poly1.next;
+                poly2 = poly2.next;
+            }
+
+            if (current.next != null)
+                current = current.next;
+        }
+
+        while (poly1 != null) {
+            current.next = new PolyNode(poly1.coefficient, poly1.power);
+            poly1 = poly1.next;
+            current = current.next;
+        }
+
+        while (poly2 != null) {
+            current.next = new PolyNode(-poly2.coefficient, poly2.power);
+            poly2 = poly2.next;
+            current = current.next;
+        }
+
+        return dummy.next;
+    }
+    public void printPolynomial(PolyNode head) {
+        while (head != null) {
+            System.out.print(head.coefficient + "x^" + head.power);
+            if (head.next != null)
+                System.out.print(" + ");
+            head = head.next;
+        }
+        System.out.println();
+    }
+    public static void main(String[] args) {
+        PolynomialSubtraction ps = new PolynomialSubtraction();
+
+        PolyNode poly1 = new PolyNode(5, 3);
+        poly1.next = new PolyNode(4, 2);
+        poly1.next.next = new PolyNode(2, 0);
+
+        PolyNode poly2 = new PolyNode(5, 1);
+        poly2.next = new PolyNode(5, 0);
+
+        System.out.print("Poly1: ");
+        ps.printPolynomial(poly1);
+
+        System.out.print("Poly2: ");
+        ps.printPolynomial(poly2);
+
+        PolyNode result = ps.subtractPolynomials(poly1, poly2);
+
+        System.out.print("Result (Poly1 - Poly2): ");
+        ps.printPolynomial(result);
+    }
+}
+
+----------------------------------------------------------------------------------------
+import java.util.*;
+class PolyNode {
+    int coefficient;
+    int power;
+    PolyNode next;
+
+    PolyNode(int c, int p) {
+        coefficient = c;
+        power = p;
+        next = null;
+    }
+}
+
+public class PolynomialMultiplication {
+
+    public PolyNode multiplyPolynomials(PolyNode poly1, PolyNode poly2) {
+        if (poly1 == null || poly2 == null) return null;
+        TreeMap<Integer, Integer> map = new TreeMap<>(Collections.reverseOrder());
+        for (PolyNode p1 = poly1; p1 != null; p1 = p1.next) {
+            for (PolyNode p2 = poly2; p2 != null; p2 = p2.next) {
+                int newPower = p1.power + p2.power;
+                int newCoeff = p1.coefficient * p2.coefficient;
+                map.put(newPower, map.getOrDefault(newPower, 0) + newCoeff);
+            }
+        }
+        PolyNode dummy = new PolyNode(0, 0);
+        PolyNode current = dummy;
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            int coeff = entry.getValue();
+            int pow = entry.getKey();
+            if (coeff != 0) {
+                current.next = new PolyNode(coeff, pow);
+                current = current.next;
+            }
+        }
+
+        return dummy.next;
+    }
+    public void printPolynomial(PolyNode head) {
+        while (head != null) {
+            System.out.print(head.coefficient + "x^" + head.power);
+            if (head.next != null)
+                System.out.print(" + ");
+            head = head.next;
+        }
+        System.out.println();
+    }
+    public static void main(String[] args) {
+        PolynomialMultiplication pm = new PolynomialMultiplication();
+        // First Polynomial: 2x^1 + 3x^0
+        PolyNode poly1 = new PolyNode(2, 1);
+        poly1.next = new PolyNode(3, 0);
+
+        // Second Polynomial: 4x^1 + 1x^0
+        PolyNode poly2 = new PolyNode(4, 1);
+        poly2.next = new PolyNode(1, 0);
+
+        System.out.print("Poly1: ");
+        pm.printPolynomial(poly1);
+
+        System.out.print("Poly2: ");
+        pm.printPolynomial(poly2);
+
+        PolyNode result = pm.multiplyPolynomials(poly1, poly2);
+
+        System.out.print("Result (Poly1 * Poly2): ");
+        pm.printPolynomial(result);
+    }
+}
+
+----------------------------------------------------------------------------------------------
+
