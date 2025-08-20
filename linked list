@@ -75,7 +75,7 @@ class SinglyLinkedList{
 			}
 			current.next=null;
 			tail=current;
-			}size++;
+			}size--;
 		}
 		
 		public void deleteAtPosition(int index){
